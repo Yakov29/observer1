@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lazy Loading Images</title>
+<style>
+  img {
+    height: 200px;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+  <img data-src="https://th.bing.com/th/id/OIP.1l6zaj6a_lISsmF5en3ZhAHaKl?&rs=1&pid=ImgDetMain" alt="Image 1">
+  <img data-src="https://th.bing.com/th/id/OIP.1l6zaj6a_lISsmF5en3ZhAHaKl?&rs=1&pid=ImgDetMain" alt="Image 2">
+  <img data-src="https://th.bing.com/th/id/OIP.1l6zaj6a_lISsmF5en3ZhAHaKl?&rs=1&pid=ImgDetMain" alt="Image 3">
+  <button id="loadButton" onclick="lazyLoadImages()">Load Images</button>
+
+  <script>
+    function lazyLoadImages() {
+      const images = document.querySelectorAll("img[data-src]");
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.src = entry.target.dataset.src;
+            observer.unobserve(entry.target);
+          }
+        });
+      });
+
+      images.forEach(image => {
+        observer.observe(image);
+      });
+    }
+  </script>
+</body>
+</html>
